@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="write-container">
+    <form method="POST" class="write-form">
+        {% csrf_token %}
+        
+        <div class="form-group title-group">
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.category }}
+            {{ form.category.errors }}
+        </div>
+
+        <div class="form-group content-group">
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" name="action" value="publish" class="btn-publish">Нийтлэх</button>
+            <a href="javascript:history.back()" class="btn-cancel">Цуцлах</a>
+            <button type="submit" name="action" value="draft" class="btn-save-draft">Ноорог болгон хадгалах</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

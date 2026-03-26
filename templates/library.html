@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="library-container">
+    <div class="list-header">
+        <h1>Your Library</h1>
+        <p>Posts you have liked or saved will appear here.</p>
+    </div>
+
+    <div class="post-feed">
+        {% for post in posts %}
+            <article class="post-item">
+                <a href="{% url 'post_detail' pk=post.pk %}" style="text-decoration: none; color: inherit;">
+                    <h3 class="post-title">{{ post.title }}</h3>
+                    <p class="post-excerpt">{{ post.content|truncatewords:15 }}</p>
+                </a>
+                <div class="post-meta">
+                    <span class="author">By {{ post.author.username }}</span>
+                    <span>•</span>
+                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                </div>
+            </article>
+        {% empty %}
+            <p>Your library is empty. Go read and like some stories!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

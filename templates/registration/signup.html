@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2>Бүртгүүлэх</h2>
+        <p class="auth-subtitle">Шинээр хаяг нээж багийн нэг хэсэг болоорой</p>
+        <form method="post" class="auth-form">
+            {% csrf_token %} 
+            <div class="form-group">
+                <label for="username">Хэрэглэгчийн нэр: </label>
+                <input type="text" name="username" id="username" required placeholder="...">
+            </div>
+
+            <div class="form-group">
+                <label for="email">И-мэйл хаяг: </label>
+                <input type="email" name="email" id="email" placeholder="example@mail.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Нууц үг: </label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirm">Нууц үг давтах:</label>
+                <input type="password" name="password_confirm" id="password_confirm" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Бүртгүүлэх</button>
+        </form>
+
+        <div class="auth-footer">
+            <span>Бүртгэлтэй юу?</span>
+            <a href="{% url 'login' %}">Нэвтрэх</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

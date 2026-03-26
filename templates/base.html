@@ -1,0 +1,70 @@
+{% load static %}
+<!doctype html>
+<html lang="mn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    
+    <div class="app-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a href="/" class="logo">MENU</a>
+                <nav class="side-nav">
+                    <a href="{% url 'post_list' %}" class="nav-link active">
+                        <span class="icon">🏠</span> <span class="label">Home</span>
+                    </a>
+                    <a href="{% url 'library' %}" class="nav-link">
+                        <span class="icon">🔖</span> <span class="label">Library</span>
+                    </a>
+                    <a href="{% url 'stories' %}" class="nav-link">
+                        <span class="icon">📜</span> <span class="label">Stories</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-bottom">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'post_create' %}" class="nav-link write-btn">
+                        <span class="icon">✍️</span> <span class="label">Write</span>
+                    </a>
+                    <a href="{% url 'profile' %}" class="profile-link">
+                        {% if user.profile.image %}
+                            <img src="{{ user.profile.image.url }}" class="sidebar-avatar">
+                        {% else %}
+                            <div class="avatar-placeholder"></div>
+                        {% endif %}
+                        <span class="label">{{ user.username }}</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Login</a>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h2>For You</h2>
+                </div>
+                <div class="header-right">
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Logout</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </header>
+
+            <div class="content-body">
+                {% block content %} {% endblock %}
+            </div>
+        </main>
+    </div>
+
+  </body>
+</html>

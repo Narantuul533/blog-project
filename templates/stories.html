@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="stories-container">
+    <div class="list-header">
+        <h1>Your stories</h1>
+        <a href="{% url 'post_create' %}" class="btn-write">Write a story</a>
+    </div>
+
+    <div class="tabs">
+        <span class="tab active">Drafts {{ drafts.count }}</span>
+        <span class="tab">Published {{ published.count }}</span>
+    </div>
+
+    <div class="post-feed">
+        {% for post in drafts %}
+            <article class="post-item">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-excerpt">{{ post.content|truncatewords:15 }}</p>
+                <div class="post-meta">
+                    <span>Last edited {{ post.updated_at|timesince }} ago</span>
+                </div>
+            </article>
+        {% empty %}
+            <p>Empty Draft.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

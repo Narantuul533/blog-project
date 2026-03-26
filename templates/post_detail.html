@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="post-detail">
+    <header class="post-detail-header">
+        <span class="detail-category">{% if post.category %}{{ post.category|upper }}{% else %}НИЙТЛЭЛ{% endif %}</span>
+        <h1 class="detail-title">{{ post.title }}</h1>
+        
+        <div class="detail-meta">
+            <span class="detail-author">Бичсэн: {{ post.author }}</span>
+            <span class="detail-divider">·</span>
+            <span class="detail-date">{{ post.created_at|timesince }} өмнө</span>
+        </div>
+    </header>
+
+    <div class="detail-content">
+        {{ post.content|linebreaks }}
+    </div>
+
+    <footer class="detail-footer">
+        <div class="like-section">
+            <form action="{% url 'like_post' post.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="like-btn">
+                    {% if user in post.likes.all %} ❤️ {% else %} 🤍 {% endif %}
+                    <span class="count">{{ post.likes.count }}</span>
+                </button>
+            </form>
+        </div>
+
+        <hr class="section-divider">
+
+        <section class="comment-section">
+            <h3>Сэтгэгдэл ({{ post.comments.count }})</h3>
+            
+            <div class="comments-list">
+                {% for comment in post.comments.all %}
+                    <div class="comment-item">
+                        <div class="comment-meta">
+                            <strong>{{ comment.author }}</strong>
+                            <span class="comment-date">{{ comment.created_at|date:"Y.m.d" }}</span>
+                        </div>
+                        <p class="comment-text">{{ comment.text }}</p>
+                    </div>
+                {% empty %}
+                    <p class="no-comments">Одоогоор сэтгэгдэл байхгүй.</p>
+                {% endfor %}
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="comment-form-wrapper">
+                <form action="{% url 'add_comment' post.pk %}" method="POST">
+                    {% csrf_token %}
+                    <textarea name="text" placeholder="What are your thoughts?" required></textarea>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-send">Илгээх</button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <div class="login-msg">
+                <p><a href="{% url 'login' %}">Нэвтэрч</a> байж сэтгэгдэл үлдээнэ үү.</p>
+            </div>
+            {% endif %}
+        </section>
+
+        <div class="navigation-footer">
+            <a href="javascript:history.back()" class="back-link">← Буцах</a>
+        </div>
+    </footer>
+</article>
+{% endblock %}
